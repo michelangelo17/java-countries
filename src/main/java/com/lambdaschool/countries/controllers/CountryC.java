@@ -40,7 +40,15 @@ public class CountryC {
         List<Country> countries = new ArrayList<>();
         countryR.findAll().iterator().forEachRemaining(countries::add);
         List<Country> filteredList = filter(countries, c -> Character.toLowerCase(c.getName().charAt(0)) == Character.toLowerCase(letter));
-        filteredList.forEach(System.out::println);
         return new ResponseEntity<>(filteredList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "population/total", produces = {"application/json"})
+    public ResponseEntity<?> logTotalPopulation() {
+        List<Country> countries = new ArrayList<>();
+        countryR.findAll().iterator().forEachRemaining(countries::add);
+        long totalPopulation = countries.stream().mapToLong(Country::getPopulation).sum();
+        System.out.println("The Total Population is " + totalPopulation);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
