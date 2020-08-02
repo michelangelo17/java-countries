@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -50,5 +52,13 @@ public class CountryC {
         long totalPopulation = countries.stream().mapToLong(Country::getPopulation).sum();
         System.out.println("The Total Population is " + totalPopulation);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "population/min", produces = {"application/json"})
+    public ResponseEntity<?> findSmallestPopulation() {
+        List<Country> countries = new ArrayList<>();
+        countryR.findAll().iterator().forEachRemaining(countries::add);
+        Country smallestCountry = Collections.min(countries, Comparator.comparing(Country::getPopulation));
+        return new ResponseEntity<>(smallestCountry,HttpStatus.OK);
     }
 }
