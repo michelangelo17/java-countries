@@ -69,4 +69,13 @@ public class CountryC {
         Country largestCountry = Collections.max(countries, Comparator.comparing(Country::getPopulation));
         return new ResponseEntity<>(largestCountry, HttpStatus.OK);
     }
+
+    @GetMapping(value = "population/median", produces = {"application/json"})
+    public ResponseEntity<?> findMedianPopulation() {
+        List<Country> countries = new ArrayList<>();
+        countryR.findAll().iterator().forEachRemaining(countries::add);
+        int numCountries = countries.size();
+        countries.sort(Comparator.comparing(Country::getPopulation));
+        return new ResponseEntity<>(countries.get(Math.floorDiv(numCountries, 2)+1), HttpStatus.OK);
+    }
 }
