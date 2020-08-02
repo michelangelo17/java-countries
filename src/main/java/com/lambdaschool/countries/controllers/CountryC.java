@@ -61,4 +61,12 @@ public class CountryC {
         Country smallestCountry = Collections.min(countries, Comparator.comparing(Country::getPopulation));
         return new ResponseEntity<>(smallestCountry,HttpStatus.OK);
     }
+
+    @GetMapping(value = "population/max", produces = {"application/json"})
+    public ResponseEntity<?> findLargestPopulation() {
+        List<Country> countries = new ArrayList<>();
+        countryR.findAll().iterator().forEachRemaining(countries::add);
+        Country largestCountry = Collections.max(countries, Comparator.comparing(Country::getPopulation));
+        return new ResponseEntity<>(largestCountry, HttpStatus.OK);
+    }
 }
